@@ -3,4 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="flag_color">#3FB7C9</color>
+    <color name="dark_solid">#4A4A4A</color>
+    <color name="star_active_color">#F9C164</color>
+    <color name="star_inactive_color">@color/dark_solid</color>
+    <color name="black_with_opacity">#80000000</color>
 </resources>
