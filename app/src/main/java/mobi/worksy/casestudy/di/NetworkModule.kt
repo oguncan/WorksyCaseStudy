@@ -45,16 +45,4 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
-    @Singleton
-    fun provideBadgeRepository(badgeApi: BadgeApi): BadgeRepository {
-        return BadgeRepository(badgeApi)
-    }
-
-    @Provides
-    @Singleton
-    fun providePraiseRepository(praiseApi: PraiseApi): PraiseRepository {
-        return PraiseRepository(praiseApi)
-    }
-
 }
