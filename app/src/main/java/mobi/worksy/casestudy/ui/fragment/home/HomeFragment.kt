@@ -40,6 +40,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 badgeListAdapter = BadgeListAdapter(emptyList())
                 adapter = badgeListAdapter
             }
+            praiseShimmerItem.startShimmer()
+            badgeTotalShimmer.startShimmer()
+
         }
     }
 
@@ -53,7 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                 }
                 is Resource.Error -> {
-                    Log.i(TAG, "setObservers: "+resource.message)
+
                 }
                 else -> {
 
@@ -65,19 +68,55 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         viewModel.praiseList.observe(viewLifecycleOwner){ resource ->
             when(resource){
                 is Resource.Success -> {
-
+                    binding.apply {
+                        hideShimmerViews()
+                    }
                 }
                 is Resource.Loading -> {
-
+                    binding.apply {
+                        showShimmerViews()
+                    }
                 }
                 is Resource.Error -> {
-                    Log.i(TAG, "setObservers: "+resource.message)
+                    binding.apply {
+                        hideShimmerViews()
+                    }
                 }
                 else -> {
 
                 }
             }
 
+        }
+    }
+
+    private fun hideShimmerViews() {
+        with(binding) {
+            praiseShimmerItem.visibility = View.GONE
+            praiseShimmerItem.stopShimmer()
+            badgeTotalShimmer.visibility = View.GONE
+            badgeTotalShimmer.stopShimmer()
+            badgeSingleItemShimmer.visibility = View.GONE
+            badgeSingleItemShimmer.stopShimmer()
+            badgeFlagLoading.visibility = View.GONE
+
+            badgeTopLayout.visibility = View.VISIBLE
+            badgesRecyclerView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showShimmerViews() {
+        with(binding) {
+            badgeTopLayout.visibility = View.GONE
+            badgesRecyclerView.visibility = View.GONE
+
+            badgeFlagLoading.visibility = View.VISIBLE
+            praiseShimmerItem.visibility = View.VISIBLE
+            praiseShimmerItem.startShimmer()
+            badgeTotalShimmer.visibility = View.VISIBLE
+            badgeTotalShimmer.startShimmer()
+            badgeSingleItemShimmer.visibility = View.VISIBLE
+            badgeSingleItemShimmer.startShimmer()
         }
     }
 

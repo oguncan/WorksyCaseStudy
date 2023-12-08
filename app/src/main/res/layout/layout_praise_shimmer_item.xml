@@ -25,10 +25,10 @@
                 android:id="@+id/praisePersonImage"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:background="@color/shimmer_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:src="@drawable/w3"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
                 android:id="@+id/praiseAuthorText"
@@ -38,7 +38,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="12dp"
-                tools:text="Nagihan Uslu"
+                android:background="@color/shimmer_color"
                 android:textSize="12sp"
                 android:fontFamily="@font/gotham_medium" />
 
@@ -49,8 +49,8 @@
                 app:layout_constraintStart_toStartOf="@id/praiseAuthorText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/praiseAuthorText"
-                tools:text="Dün, 13:30'da Gönderdi"
                 android:layout_marginTop="2dp"
+                android:background="@color/shimmer_color"
                 android:textSize="12sp"
                 android:fontFamily="@font/gotham_book" />
 
@@ -68,10 +68,10 @@
                 android:id="@+id/praiseBadgeImage"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:background="@color/shimmer_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:src="@drawable/w8"/>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <TextView
                 android:id="@+id/praiseBadgeText"
@@ -81,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginStart="12dp"
-                tools:text="Takım Oyuncusu"
+                android:background="@color/shimmer_color"
                 android:textSize="22sp"
                 android:fontFamily="@font/gotham_medium" />
 
@@ -110,7 +110,8 @@
             android:layout_marginTop="16dp"
             android:textSize="12sp"
             android:fontFamily="@font/gotham_book"
-            tools:text="Gerçek bir takım arkadaşısın. Birlikte çalışmanın çok zevkliydi aynı zamanda farklı açılardan bakmama yardımcı oldun, teşekkür ederim."/>
+            android:background="@color/shimmer_color"
+            android:minLines="3"/>
 
 
 
