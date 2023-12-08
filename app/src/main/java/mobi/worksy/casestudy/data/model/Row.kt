@@ -13,9 +13,9 @@ data class Row(
     @SerializedName("Created.")
     val createdDate: String,
     @SerializedName("ID")
-    val ID: String,
+    val id: String,
     @SerializedName("Message")
-    val Message: String,
+    val message: String,
     @SerializedName("PraiseRating")
     val praiseRating: String,
     @SerializedName("RelatedPerson")

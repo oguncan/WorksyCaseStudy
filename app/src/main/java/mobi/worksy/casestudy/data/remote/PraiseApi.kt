@@ -8,6 +8,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface PraiseApi {
-    @POST
+    @POST("/")
     suspend fun getPraiseList(@Body requestBody: RequestBody) : Response<PraiseModel>
 }

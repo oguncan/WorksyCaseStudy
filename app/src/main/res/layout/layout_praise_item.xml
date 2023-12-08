@@ -91,7 +91,7 @@
                 app:numStars="5"
                 app:starSize="20dp"
                 app:starSpacing="1dp"
-                app:isIndicator="false"
+                app:isIndicator="true"
                 app:emptyDrawable="@drawable/ic_star_inactive"
                 app:filledDrawable="@drawable/ic_star_active"
                 app:layout_constraintStart_toStartOf="@id/praiseBadgeText"
