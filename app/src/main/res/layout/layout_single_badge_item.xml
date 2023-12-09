@@ -10,7 +10,7 @@
 
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 
@@ -42,7 +42,7 @@
             tools:text="Sorun Çözücü"
             android:text="@{badgeItem.lookupValue}"
             android:fontFamily="@font/gotham_book"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/dark_solid"/>
 
         <com.fuzzproductions.ratingbar.RatingBar
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             app:stepSize="1"
             app:numStars="5"
-            app:starSize="12dp"
+            app:starSize="14dp"
             app:starSpacing="1dp"
             app:rating="@{badgeItem.averagePraiseRating}"
             app:isIndicator="true"

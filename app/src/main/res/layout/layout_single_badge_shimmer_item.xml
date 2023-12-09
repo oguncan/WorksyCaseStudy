@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:background="@color/shimmer_color"
             android:fontFamily="@font/gotham_book"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textColor="@color/dark_solid"/>
 
         <com.fuzzproductions.ratingbar.RatingBar
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             app:stepSize="1"
             app:numStars="5"
-            app:starSize="12dp"
+            app:starSize="14dp"
             app:starSpacing="1dp"
             app:isIndicator="true"
             app:emptyDrawable="@drawable/ic_star_inactive"

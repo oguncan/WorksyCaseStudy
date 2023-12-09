@@ -9,7 +9,7 @@ import mobi.worksy.casestudy.databinding.LayoutPraiseItemBinding
 class PraiseListAdapter(private val praiseList: List<PraiseModel>) : RecyclerView.Adapter<PraiseListAdapter.BadgeListViewHolder>() {
 
     inner class BadgeListViewHolder(private val binding: LayoutPraiseItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(playingMovie: PraiseModel) {
+        fun bind(praise: PraiseModel) {
 
         }
     }

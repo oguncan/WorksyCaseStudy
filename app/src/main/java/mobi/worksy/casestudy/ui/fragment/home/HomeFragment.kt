@@ -1,7 +1,6 @@
 package mobi.worksy.casestudy.ui.fragment.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import mobi.worksy.casestudy.R
 import mobi.worksy.casestudy.base.BaseFragment
 import mobi.worksy.casestudy.databinding.FragmentHomeBinding
-import mobi.worksy.casestudy.ui.fragment.home.adapter.BadgeListAdapter
+import mobi.worksy.casestudy.ui.fragment.home.adapter.BadgeSliderAdapter
 import mobi.worksy.casestudy.ui.fragment.home.viewModel.HomeViewModel
 import mobi.worksy.casestudy.util.Resource
 import mobi.worksy.casestudy.util.formatToComma
@@ -21,7 +20,7 @@ import mobi.worksy.casestudy.util.formatToComma
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
-    private var badgeListAdapter : BadgeListAdapter? = null
+    private var badgeListAdapter : BadgeSliderAdapter? = null
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -36,10 +35,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setViews(){
         binding.apply {
-            badgesRecyclerView.apply {
-                var gridLayoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL,false)
-                layoutManager = gridLayoutManager
-                badgeListAdapter = BadgeListAdapter(emptyList())
+            badgesViewPager.apply {
+                badgeListAdapter = BadgeSliderAdapter(emptyList())
                 adapter = badgeListAdapter
             }
             praiseShimmerItem.startShimmer()
@@ -75,7 +72,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         resource.data?.let {
                             var badgeList = viewModel.calculateBadgeGroups(it.Row)
                             badgeListAdapter?.run {
-                                updateData(badgeList)
+                                updateData(badgeList.chunked(4))
                             }
                             val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.Row)
                             badgeAverageText.text = formatToComma(String.format("%.1f", averageRating))
@@ -113,14 +110,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             badgeFlagLoading.visibility = View.GONE
 
             badgeTopLayout.visibility = View.VISIBLE
-            badgesRecyclerView.visibility = View.VISIBLE
+            badgesViewPager.visibility = View.VISIBLE
         }
     }
 
     private fun showShimmerViews() {
         with(binding) {
             badgeTopLayout.visibility = View.GONE
-            badgesRecyclerView.visibility = View.GONE
+            badgesViewPager.visibility = View.GONE
 
             badgeFlagLoading.visibility = View.VISIBLE
             praiseShimmerItem.visibility = View.VISIBLE

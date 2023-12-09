@@ -213,7 +213,8 @@
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/badgeSingleItemShimmer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="16dp">
 
 
                     <LinearLayout
@@ -260,16 +261,12 @@
 
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/badgesRecyclerView"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/badgesViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginVertical="16dp"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/layout_single_badge_item"/>
+                    android:visibility="visible"
+                    android:layout_marginVertical="8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
