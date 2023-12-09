@@ -7,7 +7,7 @@
     <color name="star_active_color">#F9C164</color>
     <color name="star_inactive_color">@color/dark_solid</color>
     <color name="black_with_opacity">#4D000000</color>
-    <color name="inactive_indicator_color">#4DC4C4C4</color>
-    <color name="active_indicator_color">#33000000</color>
+    <color name="inactive_indicator_color">#99C4C4C4</color>
+    <color name="active_indicator_color">#59000000</color>
     <color name="shimmer_color">#C2C2C2</color>
 </resources>
