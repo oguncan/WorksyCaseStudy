@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp">
+            android:paddingHorizontal="12dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -261,16 +261,34 @@
 
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/badgesViewPager"
+                <LinearLayout
+                    android:id="@+id/viewPagerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:layout_marginVertical="8dp" />
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/badgesViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:layout_marginVertical="8dp">
+
+                    </androidx.viewpager2.widget.ViewPager2>
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout"
+                        android:layout_width="match_parent"
+                        android:background="@android:color/white"
+                        app:tabBackground="@drawable/drawable_tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+
 
             </FrameLayout>
 

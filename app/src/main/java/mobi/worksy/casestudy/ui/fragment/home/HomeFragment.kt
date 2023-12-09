@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import mobi.worksy.casestudy.R
 import mobi.worksy.casestudy.base.BaseFragment
@@ -39,6 +40,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 badgeListAdapter = BadgeSliderAdapter(emptyList())
                 adapter = badgeListAdapter
             }
+            TabLayoutMediator(tabLayout, badgesViewPager) { tab, position ->
+
+            }.attach()
             praiseShimmerItem.startShimmer()
             badgeTotalShimmer.startShimmer()
 
@@ -110,14 +114,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             badgeFlagLoading.visibility = View.GONE
 
             badgeTopLayout.visibility = View.VISIBLE
-            badgesViewPager.visibility = View.VISIBLE
+            viewPagerLayout.visibility = View.VISIBLE
         }
     }
 
     private fun showShimmerViews() {
         with(binding) {
             badgeTopLayout.visibility = View.GONE
-            badgesViewPager.visibility = View.GONE
+            viewPagerLayout.visibility = View.GONE
 
             badgeFlagLoading.visibility = View.VISIBLE
             praiseShimmerItem.visibility = View.VISIBLE
