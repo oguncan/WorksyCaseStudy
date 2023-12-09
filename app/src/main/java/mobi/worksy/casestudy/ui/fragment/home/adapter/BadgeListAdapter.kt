@@ -3,14 +3,14 @@ package mobi.worksy.casestudy.ui.fragment.home.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import mobi.worksy.casestudy.data.model.BadgeModel
+import mobi.worksy.casestudy.data.model.BadgeGroupModel
 import mobi.worksy.casestudy.databinding.LayoutSingleBadgeItemBinding
 
-class BadgeListAdapter(private val badgeList: List<BadgeModel>) : RecyclerView.Adapter<BadgeListAdapter.BadgeListViewHolder>() {
+class BadgeListAdapter(private var badgeList: List<BadgeGroupModel>) : RecyclerView.Adapter<BadgeListAdapter.BadgeListViewHolder>() {
 
     inner class BadgeListViewHolder(private val binding: LayoutSingleBadgeItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(playingMovie: BadgeModel) {
-
+        fun bind(playingMovie: BadgeGroupModel) {
+            binding.badgeItem = playingMovie
         }
     }
 
@@ -23,5 +23,10 @@ class BadgeListAdapter(private val badgeList: List<BadgeModel>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: BadgeListViewHolder, position: Int) {
         holder.bind(badgeList[position])
+    }
+
+    fun updateData(newData: List<BadgeGroupModel>) {
+        badgeList = newData
+        notifyDataSetChanged()
     }
 }

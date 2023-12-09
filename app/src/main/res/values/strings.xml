@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WorksyCaseStudy</string>
+    <string name="tum_rozetlerde_text">Tüm Rozetlerde</string>
+    <string name="quantity_string">%d Adet</string>
 </resources>

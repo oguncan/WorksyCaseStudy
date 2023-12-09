@@ -9,11 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import mobi.worksy.casestudy.R
 import mobi.worksy.casestudy.base.BaseFragment
 import mobi.worksy.casestudy.databinding.FragmentHomeBinding
 import mobi.worksy.casestudy.ui.fragment.home.adapter.BadgeListAdapter
 import mobi.worksy.casestudy.ui.fragment.home.viewModel.HomeViewModel
 import mobi.worksy.casestudy.util.Resource
+import mobi.worksy.casestudy.util.formatToComma
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -35,7 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setViews(){
         binding.apply {
             badgesRecyclerView.apply {
-                var gridLayoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL,false)
+                var gridLayoutManager = GridLayoutManager(requireContext(), 2, RecyclerView.HORIZONTAL,false)
                 layoutManager = gridLayoutManager
                 badgeListAdapter = BadgeListAdapter(emptyList())
                 adapter = badgeListAdapter
@@ -70,6 +72,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is Resource.Success -> {
                     binding.apply {
                         hideShimmerViews()
+                        resource.data?.let {
+                            var badgeList = viewModel.calculateBadgeGroups(it.Row)
+                            badgeListAdapter?.run {
+                                updateData(badgeList)
+                            }
+                            val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.Row)
+                            badgeAverageText.text = formatToComma(String.format("%.1f", averageRating))
+                            badgeAverageRatingBar.rating = averageRating.toFloat()
+                            badgeTotalText.text = getString(R.string.quantity_string, totalRating.toInt())
+                        }
                     }
                 }
                 is Resource.Loading -> {
