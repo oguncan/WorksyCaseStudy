@@ -95,7 +95,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             badgeTotalText.text = getString(R.string.quantity_string, totalRating.toInt())
 
                             //PRAISE
-                            praiseListAdapter.updateData(it.praiseItem.subList(0, 10))
+                            praiseListAdapter.differ.submitList(it.praiseItem)
                         }
                     }
                 }

@@ -21,11 +21,23 @@ class PraiseListAdapter(private var praiseList: List<PraiseItemModel>) : Recycle
         return PraiseListViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = praiseList.size
+    override fun getItemCount(): Int = differ.currentList.size
 
     override fun onBindViewHolder(holder: PraiseListViewHolder, position: Int) {
-        holder.bind(praiseList[position])
+        holder.bind(differ.currentList[position])
     }
+
+    private val differCallback = object : DiffUtil.ItemCallback<PraiseItemModel>() {
+        override fun areItemsTheSame(oldItem: PraiseItemModel, newItem: PraiseItemModel): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: PraiseItemModel, newItem: PraiseItemModel): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, differCallback)
 
     fun updateData(newPraiseList : List<PraiseItemModel>){
         praiseList = newPraiseList
