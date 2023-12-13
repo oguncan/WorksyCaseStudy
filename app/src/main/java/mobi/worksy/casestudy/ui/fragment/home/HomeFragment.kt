@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
@@ -33,7 +34,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setViews()
         setObservers()
     }
@@ -42,6 +42,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         praiseListAdapter = PraiseListAdapter(emptyList())
         badgeListAdapter = BadgeSliderAdapter(emptyList())
         binding.apply {
+            (activity as AppCompatActivity).setSupportActionBar(toolbar)
+            (activity as AppCompatActivity).supportActionBar?.apply {
+                title = null
+                setDisplayShowTitleEnabled(false)
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.ic_back_arrow)
+            }
             badgesViewPager.apply {
                 adapter = badgeListAdapter
             }

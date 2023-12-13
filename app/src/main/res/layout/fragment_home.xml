@@ -6,6 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.home.HomeFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:titleTextColor="@color/black"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appreciation_and_thanks_text"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:layout_gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/badgeCardview"
         android:layout_width="match_parent"
@@ -15,7 +35,7 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -154,7 +174,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/tum_rozetlerde_text"
+                            android:text="@string/on_all_badges_text"
                             android:fontFamily="@font/gotham_book"
                             android:textSize="16sp"/>
 
@@ -338,6 +358,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
+        android:elevation="0dp"
         tools:listitem="@layout/layout_praise_item"
         app:layout_constraintTop_toBottomOf="@id/badgeCardview"
         app:layout_constraintBottom_toBottomOf="parent"
