@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="badgeItem"
+            type="mobi.worksy.casestudy.data.model.BadgeGroupModel" />
+
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/badgeImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:loadImageWithLookupId="@{badgeItem.lookupId}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/w8"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/badgeImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:layout_marginStart="4dp"
+        android:gravity="start">
+
+        <TextView
+            android:id="@+id/badgeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Sorun Çözücü"
+            android:text="@{badgeItem.lookupValue}"
+            android:fontFamily="@font/gotham_book"
+            android:textSize="14sp"
+            android:textColor="@color/dark_solid"/>
+
+        <com.fuzzproductions.ratingbar.RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:stepSize="1"
+            app:numStars="5"
+            app:starSize="14dp"
+            app:starSpacing="1dp"
+            app:rating="@{badgeItem.averagePraiseRating}"
+            app:isIndicator="true"
+            app:emptyDrawable="@drawable/ic_star_inactive"
+            app:filledDrawable="@drawable/ic_star_active"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/badgeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="5 Adet"
+            android:text="@{badgeItem.itemCount + ` Adet`}"
+            android:fontFamily="@font/gotham_book"
+            android:textSize="@dimen/_7ssp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black_with_opacity"/>
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

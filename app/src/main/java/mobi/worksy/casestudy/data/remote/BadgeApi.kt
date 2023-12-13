@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface BadgeApi {
-    @POST
+    @POST("/")
     suspend fun getBadgeList(@Body requestBody: RequestBody) : Response<BadgeModel>
 }

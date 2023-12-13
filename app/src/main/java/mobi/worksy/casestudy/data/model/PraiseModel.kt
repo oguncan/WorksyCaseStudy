@@ -1,5 +1,8 @@
 package mobi.worksy.casestudy.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class PraiseModel(
-    val Row: List<Row>
+    @SerializedName("Row")
+    val praiseItem: List<PraiseItemModel>
 )

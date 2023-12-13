@@ -12,6 +12,7 @@ import mobi.worksy.casestudy.util.BASE_URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -41,20 +42,11 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
+        //Timeout problem solve
         return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideBadgeRepository(badgeApi: BadgeApi): BadgeRepository {
-        return BadgeRepository(badgeApi)
-    }
-
-    @Provides
-    @Singleton
-    fun providePraiseRepository(praiseApi: PraiseApi): PraiseRepository {
-        return PraiseRepository(praiseApi)
     }
 
 }
