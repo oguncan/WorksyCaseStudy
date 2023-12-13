@@ -13,7 +13,7 @@ class PraiseUseCase @Inject constructor(
     operator fun invoke(): Flow<PraiseUseCaseResult> = flow {
         emit(PraiseUseCaseResult.Loading)
         try {
-            val response = praiseRepository.getBadgeList()
+            val response = praiseRepository.getPraiseModel()
             if (response.isSuccessful) {
                 val data = response.body()
                 if (data != null) {

@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import mobi.worksy.casestudy.R
 import mobi.worksy.casestudy.base.BaseFragment
 import mobi.worksy.casestudy.databinding.FragmentHomeBinding
 import mobi.worksy.casestudy.ui.fragment.home.adapter.BadgeSliderAdapter
+import mobi.worksy.casestudy.ui.fragment.home.adapter.PraiseListAdapter
 import mobi.worksy.casestudy.ui.fragment.home.viewModel.HomeViewModel
 import mobi.worksy.casestudy.util.Resource
 import mobi.worksy.casestudy.util.formatOneFloatNumber
@@ -24,7 +24,8 @@ import mobi.worksy.casestudy.util.show
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
-    private var badgeListAdapter : BadgeSliderAdapter? = null
+    private lateinit var badgeListAdapter : BadgeSliderAdapter
+    private lateinit var praiseListAdapter: PraiseListAdapter
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -38,10 +39,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setViews(){
+        praiseListAdapter = PraiseListAdapter(emptyList())
+        badgeListAdapter = BadgeSliderAdapter(emptyList())
         binding.apply {
             badgesViewPager.apply {
-                badgeListAdapter = BadgeSliderAdapter(emptyList())
                 adapter = badgeListAdapter
+            }
+            praiseRecyclerView.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = praiseListAdapter
+                setHasFixedSize(true)
             }
             TabLayoutMediator(tabLayout, badgesViewPager) { tab, position ->
 
@@ -77,14 +84,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     binding.apply {
                         hideShimmerViews()
                         resource.data?.let {
-                            var badgeList = viewModel.calculateBadgeGroups(it.Row)
-                            badgeListAdapter?.run {
+                            //BADGE
+                            var badgeList = viewModel.calculateBadgeGroups(it.praiseItem)
+                            badgeListAdapter.run {
                                 updateData(badgeList.chunked(4))
                             }
-                            val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.Row)
+                            val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.praiseItem)
                             badgeAverageText.text = averageRating.formatOneFloatNumber().formatToComma()
                             badgeAverageRatingBar.rating = averageRating.toFloat()
                             badgeTotalText.text = getString(R.string.quantity_string, totalRating.toInt())
+
+                            //PRAISE
+                            praiseListAdapter.updateData(it.praiseItem.subList(0, 10))
                         }
                     }
                 }
@@ -115,6 +126,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
             badgeTopLayout.show()
             viewPagerLayout.show()
+            praiseRecyclerView.show()
         }
     }
 
@@ -122,6 +134,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         with(binding) {
             badgeTopLayout.hide()
             viewPagerLayout.hide()
+            praiseRecyclerView.hide()
 
             badgeFlagLoading.show()
             praiseShimmerItem.show()

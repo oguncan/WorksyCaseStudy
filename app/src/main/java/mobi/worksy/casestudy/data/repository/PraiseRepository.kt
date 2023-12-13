@@ -9,5 +9,5 @@ import retrofit2.Response
 import javax.inject.Inject
 
 interface PraiseRepository {
-    suspend fun getBadgeList() : Response<PraiseModel>
+    suspend fun getPraiseModel() : Response<PraiseModel>
 }

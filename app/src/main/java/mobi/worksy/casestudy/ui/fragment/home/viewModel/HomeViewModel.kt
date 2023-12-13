@@ -1,6 +1,5 @@
 package mobi.worksy.casestudy.ui.fragment.home.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,11 +14,8 @@ import mobi.worksy.casestudy.data.domain.PraiseUseCaseResult
 import mobi.worksy.casestudy.data.model.BadgeGroupModel
 import mobi.worksy.casestudy.data.model.BadgeModel
 import mobi.worksy.casestudy.data.model.PraiseModel
-import mobi.worksy.casestudy.data.model.Row
-import mobi.worksy.casestudy.data.repository.BadgeRepository
-import mobi.worksy.casestudy.data.repository.PraiseRepository
+import mobi.worksy.casestudy.data.model.PraiseItemModel
 import mobi.worksy.casestudy.util.Resource
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,7 +48,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun calculateBadgeGroups(badgeItems: List<Row>): List<BadgeGroupModel> {
+    fun calculateBadgeGroups(badgeItems: List<PraiseItemModel>): List<BadgeGroupModel> {
         val groupedBadges = badgeItems.groupBy { it.badgeDetailInformation[0].lookupId to it.badgeDetailInformation[0].lookupValue }
         return groupedBadges.map { (key, items) ->
             val (lookupId, lookupValue) = key
@@ -62,9 +58,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun calculateBadgeTotalAvg(rows: List<Row>): Pair<Double, Double> {
-        val totalRating = rows.sumByDouble { it.praiseRating.toDouble() }
-        val averageRating = if (rows.isNotEmpty()) (totalRating / rows.size) else 0.0
+    fun calculateBadgeTotalAvg(praiseItems: List<PraiseItemModel>): Pair<Double, Double> {
+        val totalRating = praiseItems.sumByDouble { it.praiseRating.toDouble() }
+        val averageRating = if (praiseItems.isNotEmpty()) (totalRating / praiseItems.size) else 0.0
         return Pair(totalRating, averageRating)
     }
 

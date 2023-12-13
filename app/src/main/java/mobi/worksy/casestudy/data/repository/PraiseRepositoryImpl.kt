@@ -11,7 +11,7 @@ class PraiseRepositoryImpl @Inject constructor(
     private val praiseApi: PraiseApi
 ) : PraiseRepository {
 
-    override suspend fun getBadgeList(): Response<PraiseModel> {
+    override suspend fun getPraiseModel(): Response<PraiseModel> {
         val requestBody =
             "{\"endpoint\": \"praiseList\"}".toRequestBody("application/json".toMediaTypeOrNull())
         return praiseApi.getPraiseList(requestBody)
