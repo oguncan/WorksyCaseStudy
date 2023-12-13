@@ -1,7 +1,12 @@
 package mobi.worksy.casestudy.util
 
+import android.view.View
 import mobi.worksy.casestudy.R
 
-fun formatToComma(number: String): String {
-    return number.replace('.', ',')
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.GONE
 }

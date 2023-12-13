@@ -15,7 +15,10 @@ import mobi.worksy.casestudy.databinding.FragmentHomeBinding
 import mobi.worksy.casestudy.ui.fragment.home.adapter.BadgeSliderAdapter
 import mobi.worksy.casestudy.ui.fragment.home.viewModel.HomeViewModel
 import mobi.worksy.casestudy.util.Resource
+import mobi.worksy.casestudy.util.formatOneFloatNumber
 import mobi.worksy.casestudy.util.formatToComma
+import mobi.worksy.casestudy.util.hide
+import mobi.worksy.casestudy.util.show
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -79,7 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 updateData(badgeList.chunked(4))
                             }
                             val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.Row)
-                            badgeAverageText.text = formatToComma(String.format("%.1f", averageRating))
+                            badgeAverageText.text = averageRating.formatOneFloatNumber().formatToComma()
                             badgeAverageRatingBar.rating = averageRating.toFloat()
                             badgeTotalText.text = getString(R.string.quantity_string, totalRating.toInt())
                         }
@@ -95,9 +98,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         hideShimmerViews()
                     }
                 }
-                else -> {
-
-                }
             }
 
         }
@@ -105,30 +105,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun hideShimmerViews() {
         with(binding) {
-            praiseShimmerItem.visibility = View.GONE
+            praiseShimmerItem.hide()
             praiseShimmerItem.stopShimmer()
-            badgeTotalShimmer.visibility = View.GONE
+            badgeTotalShimmer.hide()
             badgeTotalShimmer.stopShimmer()
-            badgeSingleItemShimmer.visibility = View.GONE
+            badgeSingleItemShimmer.hide()
             badgeSingleItemShimmer.stopShimmer()
-            badgeFlagLoading.visibility = View.GONE
+            badgeFlagLoading.hide()
 
-            badgeTopLayout.visibility = View.VISIBLE
-            viewPagerLayout.visibility = View.VISIBLE
+            badgeTopLayout.show()
+            viewPagerLayout.show()
         }
     }
 
     private fun showShimmerViews() {
         with(binding) {
-            badgeTopLayout.visibility = View.GONE
-            viewPagerLayout.visibility = View.GONE
+            badgeTopLayout.hide()
+            viewPagerLayout.hide()
 
-            badgeFlagLoading.visibility = View.VISIBLE
-            praiseShimmerItem.visibility = View.VISIBLE
+            badgeFlagLoading.show()
+            praiseShimmerItem.show()
             praiseShimmerItem.startShimmer()
-            badgeTotalShimmer.visibility = View.VISIBLE
+            badgeTotalShimmer.show()
             badgeTotalShimmer.startShimmer()
-            badgeSingleItemShimmer.visibility = View.VISIBLE
+            badgeSingleItemShimmer.show()
             badgeSingleItemShimmer.startShimmer()
         }
     }

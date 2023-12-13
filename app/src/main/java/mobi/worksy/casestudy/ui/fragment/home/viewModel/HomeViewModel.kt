@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
         getPraiseList()
     }
 
-    fun getBadgeList() = viewModelScope.launch {
+    private fun getBadgeList() = viewModelScope.launch {
         badgeUseCase().collect { result ->
             when(result){
                 is BadgeUseCaseResult.Success -> _badgeList.value = Resource.Success(result.badgeList)
@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(
 
 
 
-    fun getPraiseList() = viewModelScope.launch {
+    private fun getPraiseList() = viewModelScope.launch {
         praiseUseCase().collect { result ->
             when(result){
                 is PraiseUseCaseResult.Success -> _praiseList.value = Resource.Success(result.praiseList)
