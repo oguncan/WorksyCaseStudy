@@ -67,24 +67,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setObservers(){
-        viewModel.badgeList.observe(viewLifecycleOwner){ resource ->
-            when(resource){
-                is Resource.Success -> {
-
-                }
-                is Resource.Loading -> {
-
-                }
-                is Resource.Error -> {
-
-                }
-                else -> {
-
-                }
-            }
-
-        }
-
         viewModel.praiseList.observe(viewLifecycleOwner){ resource ->
             when(resource){
                 is Resource.Success -> {
@@ -113,7 +95,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
                 is Resource.Error -> {
                     binding.apply {
-                        hideShimmerViews()
+                        hideShimmerViews().also {
+                            badgeTopLayout.hide()
+                            viewPagerLayout.hide()
+                            praiseRecyclerView.hide()
+                            errorLayout.root.show()
+                            errorLayout.lottieAnimationView.playAnimation()
+                        }
                     }
                 }
             }
@@ -150,6 +138,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             badgeTotalShimmer.startShimmer()
             badgeSingleItemShimmer.show()
             badgeSingleItemShimmer.startShimmer()
+
+            errorLayout.root.hide()
+            errorLayout.lottieAnimationView.cancelAnimation()
         }
     }
 
