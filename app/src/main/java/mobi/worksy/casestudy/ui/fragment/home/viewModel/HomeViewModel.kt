@@ -8,6 +8,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import mobi.worksy.casestudy.application.WorksyApplication
+import mobi.worksy.casestudy.data.domain.BadgeUseCase
+import mobi.worksy.casestudy.data.domain.BadgeUseCaseResult
+import mobi.worksy.casestudy.data.domain.PraiseUseCase
+import mobi.worksy.casestudy.data.domain.PraiseUseCaseResult
 import mobi.worksy.casestudy.data.model.BadgeGroupModel
 import mobi.worksy.casestudy.data.model.BadgeModel
 import mobi.worksy.casestudy.data.model.PraiseModel
@@ -20,8 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    val badgeRepository: BadgeRepository,
-    val praiseRepository: PraiseRepository,
+    private val badgeUseCase: BadgeUseCase,
+    private val praiseUseCase: PraiseUseCase,
     private val application: WorksyApplication
 ) : ViewModel() {
 
@@ -39,23 +43,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getBadgeList() = viewModelScope.launch {
-        _badgeList.value = Resource.Loading()
-        try {
-            val response = badgeRepository.getBadgeList()
-            if(response.isSuccessful){
-                response.body()?.let { badgeModel ->
-                    _badgeList.postValue(Resource.Success(badgeModel))
-                }
+        badgeUseCase().collect { result ->
+            when(result){
+                is BadgeUseCaseResult.Success -> _badgeList.value = Resource.Success(result.badgeList)
+                is BadgeUseCaseResult.Loading -> _badgeList.value = Resource.Loading()
+                is BadgeUseCaseResult.Error -> _badgeList.value = Resource.Error(result.message)
             }
-            else {
-                _badgeList.postValue(Resource.Error(response.message()))
-            }
-        } catch (e: Exception){
-            val exceptionMessage = when (e) {
-                is IOException -> "Network Failure"
-                else -> "Conversion Error"
-            }
-            _badgeList.postValue(Resource.Error(exceptionMessage))
         }
     }
 
@@ -78,23 +71,12 @@ class HomeViewModel @Inject constructor(
 
 
     fun getPraiseList() = viewModelScope.launch {
-        _praiseList.value = Resource.Loading()
-        try {
-            val response = praiseRepository.getBadgeList()
-            if(response.isSuccessful){
-                response.body()?.let { praiseModel ->
-                    _praiseList.postValue(Resource.Success(praiseModel))
-                }
+        praiseUseCase().collect { result ->
+            when(result){
+                is PraiseUseCaseResult.Success -> _praiseList.value = Resource.Success(result.praiseList)
+                is PraiseUseCaseResult.Loading -> _praiseList.value = Resource.Loading()
+                is PraiseUseCaseResult.Error -> _praiseList.value = Resource.Error(result.message)
             }
-            else {
-                _praiseList.postValue(Resource.Error(response.message()))
-            }
-        } catch (e: Exception){
-            val exceptionMessage = when (e) {
-                is IOException -> "Network Failure"
-                else -> "Conversion Error"
-            }
-            _praiseList.postValue(Resource.Error(exceptionMessage))
         }
     }
 

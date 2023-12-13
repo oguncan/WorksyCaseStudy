@@ -9,13 +9,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
-class BadgeRepository @Inject constructor(
-    private val badgeApi: BadgeApi
-) {
+interface BadgeRepository {
 
-    suspend fun getBadgeList() : Response<BadgeModel> {
-        val requestBody =
-            "{\"endpoint\": \"badgeList\"}".toRequestBody("application/json".toMediaTypeOrNull())
-        return badgeApi.getBadgeList(requestBody)
-    }
+    suspend fun getBadgeList() : Response<BadgeModel>
+
 }

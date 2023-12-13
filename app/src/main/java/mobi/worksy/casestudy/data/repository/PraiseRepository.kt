@@ -8,12 +8,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
-class PraiseRepository @Inject constructor(
-    private val praiseApi: PraiseApi
-) {
-    suspend fun getBadgeList() : Response<PraiseModel> {
-        val requestBody =
-            "{\"endpoint\": \"praiseList\"}".toRequestBody("application/json".toMediaTypeOrNull())
-        return praiseApi.getPraiseList(requestBody)
-    }
+interface PraiseRepository {
+    suspend fun getBadgeList() : Response<PraiseModel>
 }
