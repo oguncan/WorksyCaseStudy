@@ -10,11 +10,13 @@ import mobi.worksy.casestudy.application.WorksyApplication
 import mobi.worksy.casestudy.data.domain.BadgeUseCase
 import mobi.worksy.casestudy.data.domain.BadgeUseCaseResult
 import mobi.worksy.casestudy.data.domain.PraiseUseCase
+import mobi.worksy.casestudy.data.domain.PraiseUseCaseAllResult
 import mobi.worksy.casestudy.data.domain.PraiseUseCaseResult
 import mobi.worksy.casestudy.data.model.BadgeGroupModel
 import mobi.worksy.casestudy.data.model.BadgeModel
-import mobi.worksy.casestudy.data.model.PraiseModel
 import mobi.worksy.casestudy.data.model.PraiseItemModel
+import mobi.worksy.casestudy.ui.fragment.home.BadgeSliderUiState
+import mobi.worksy.casestudy.ui.fragment.home.PraiseListUiState
 import mobi.worksy.casestudy.util.Resource
 import javax.inject.Inject
 
@@ -29,19 +31,40 @@ class HomeViewModel @Inject constructor(
     val badgeList: LiveData<Resource<BadgeModel>>
         get() = _badgeList
 
-    private val _praiseList = MutableLiveData<Resource<PraiseModel>>()
-    val praiseList: LiveData<Resource<PraiseModel>>
-        get() = _praiseList
+    private val _praiseAllList = MutableLiveData<BadgeSliderUiState<List<PraiseItemModel>>>()
+    val praiseList: LiveData<BadgeSliderUiState<List<PraiseItemModel>>>
+        get() = _praiseAllList
+
+    private val _praisePaginatedList = MutableLiveData<PraiseListUiState<List<PraiseItemModel>>>()
+    val praisePaginatedList: LiveData<PraiseListUiState<List<PraiseItemModel>>>
+        get() = _praisePaginatedList
+
+    private var currentPage = 1
+    private var isLoading = false
 
     init {
         getBadgeList()
+        getAllPraiseData()
         getPraiseList()
+    }
+
+    private fun getAllPraiseData() = viewModelScope.launch{
+        praiseUseCase.getAllPraiseData().collect { result ->
+            when(result){
+                is PraiseUseCaseAllResult.Success -> _praiseAllList.value = BadgeSliderUiState.Success(result.praiseAllList)
+                is PraiseUseCaseAllResult.Loading -> _praiseAllList.value = BadgeSliderUiState.Loading()
+                is PraiseUseCaseAllResult.Error -> _praiseAllList.value = BadgeSliderUiState.Error(result.message)
+            }
+        }
     }
 
     private fun getBadgeList() = viewModelScope.launch {
         badgeUseCase().collect { result ->
             when(result){
-                is BadgeUseCaseResult.Success -> _badgeList.value = Resource.Success(result.badgeList)
+                is BadgeUseCaseResult.Success -> {
+                    _badgeList.value = Resource.Success(result.badgeList)
+                    currentPage++
+                }
                 is BadgeUseCaseResult.Loading -> _badgeList.value = Resource.Loading()
                 is BadgeUseCaseResult.Error -> _badgeList.value = Resource.Error(result.message)
             }
@@ -72,12 +95,31 @@ class HomeViewModel @Inject constructor(
 
 
     private fun getPraiseList() = viewModelScope.launch {
-        praiseUseCase().collect { result ->
+        praiseUseCase(currentPage).collect { result ->
             when(result){
-                is PraiseUseCaseResult.Success -> _praiseList.value = Resource.Success(result.praiseList)
-                is PraiseUseCaseResult.Loading -> _praiseList.value = Resource.Loading()
-                is PraiseUseCaseResult.Error -> _praiseList.value = Resource.Error(result.message)
+                is PraiseUseCaseResult.Success -> {
+                    isLoading = false
+                    val newData = result.praiseList
+                    val currentData = _praisePaginatedList.value?.data.orEmpty()
+                    val updatedData = currentData.toMutableList().apply { addAll(newData) }
+                    _praisePaginatedList.value = PraiseListUiState.Success(updatedData)
+                    currentPage++
+                }
+                is PraiseUseCaseResult.Loading -> {
+                    isLoading = true
+                    _praisePaginatedList.value = PraiseListUiState.Loading()
+                }
+                is PraiseUseCaseResult.Error -> {
+                    isLoading = false
+                    _praisePaginatedList.value = PraiseListUiState.Error(result.message)
+                }
             }
+        }
+    }
+
+    fun onRecyclerViewScrolled(visibleItemCount: Int, lastVisibleItemPosition: Int, totalItemCount: Int) {
+        if (!isLoading && lastVisibleItemPosition + visibleItemCount >= totalItemCount) {
+            getPraiseList()
         }
     }
 

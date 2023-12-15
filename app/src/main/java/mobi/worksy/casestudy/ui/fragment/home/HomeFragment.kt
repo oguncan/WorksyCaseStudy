@@ -63,37 +63,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }.attach()
             praiseShimmerItem.startShimmer()
             badgeTotalShimmer.startShimmer()
+
+            praiseRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                    viewModel.onRecyclerViewScrolled(visibleItemCount, lastVisibleItemPosition, totalItemCount)
+                }
+            })
         }
     }
 
     private fun setObservers(){
         viewModel.praiseList.observe(viewLifecycleOwner){ resource ->
             when(resource){
-                is Resource.Success -> {
+                is BadgeSliderUiState.Success -> {
                     binding.apply {
                         hideShimmerViews()
                         resource.data?.let {
                             //BADGE
-                            var badgeList = viewModel.calculateBadgeGroups(it.praiseItem)
+                            var badgeList = viewModel.calculateBadgeGroups(it)
                             badgeListAdapter.run {
                                 updateData(badgeList.chunked(4))
                             }
-                            val (numberOfBadges, averageRating) = viewModel.calculateBadgeTotalAvg(it.praiseItem)
+                            val (numberOfBadges, averageRating) = viewModel.calculateBadgeTotalAvg(it)
                             badgeAverageText.text = averageRating.formatOneFloatNumber().formatToComma()
                             badgeAverageRatingBar.rating = averageRating.toFloat()
                             badgeTotalText.text = getString(R.string.quantity_string, numberOfBadges)
-
-                            //PRAISE
-                            praiseListAdapter.differ.submitList(it.praiseItem)
                         }
                     }
                 }
-                is Resource.Loading -> {
+                is BadgeSliderUiState.Loading -> {
                     binding.apply {
                         showShimmerViews()
                     }
                 }
-                is Resource.Error -> {
+                is BadgeSliderUiState.Error -> {
                     binding.apply {
                         hideShimmerViews().also {
                             badgeTopLayout.hide()
@@ -107,6 +114,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             }
                         }
                     }
+                }
+            }
+        }
+        viewModel.praisePaginatedList.observe(viewLifecycleOwner){ resource ->
+            when(resource){
+                is PraiseListUiState.Success -> {
+                    binding.apply {
+                        resource.data?.let {
+                            //PRAISE
+                            praiseListAdapter.updateData(it)
+                        }
+                    }
+                }
+                is PraiseListUiState.Loading -> {
+
+                }
+                is PraiseListUiState.Error -> {
+
                 }
             }
 

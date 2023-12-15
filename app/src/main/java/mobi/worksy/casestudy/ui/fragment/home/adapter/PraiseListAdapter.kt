@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import mobi.worksy.casestudy.data.model.PraiseItemModel
 import mobi.worksy.casestudy.databinding.LayoutPraiseItemBinding
 
-class PraiseListAdapter() : RecyclerView.Adapter<PraiseListAdapter.PraiseListViewHolder>() {
+class PraiseListAdapter : RecyclerView.Adapter<PraiseListAdapter.PraiseListViewHolder>() {
 
     inner class PraiseListViewHolder(private val binding: LayoutPraiseItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(praise: PraiseItemModel) {
@@ -40,6 +40,37 @@ class PraiseListAdapter() : RecyclerView.Adapter<PraiseListAdapter.PraiseListVie
     val differ = AsyncListDiffer(this, differCallback)
 
     fun updateData(newPraiseList : List<PraiseItemModel>){
-        notifyDataSetChanged()
+        val oldList = ArrayList(differ.currentList)
+
+        val combinedList = ArrayList<PraiseItemModel>(oldList)
+        combinedList.addAll(newPraiseList)
+
+        val diffUtilCallBack = PraiseDiffCallback(oldList, combinedList)
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallBack)
+
+        differ.submitList(combinedList)
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    class PraiseDiffCallback(
+        private val oldList: List<PraiseItemModel>,
+        private val newList: List<PraiseItemModel>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
     }
 }
