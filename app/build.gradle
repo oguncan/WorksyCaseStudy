@@ -44,6 +44,12 @@ android {
     packagingOptions {
         resources.excludes += "DebugProbesKt.bin"
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
@@ -62,6 +68,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
@@ -92,8 +100,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -135,4 +143,16 @@ dependencies {
 
     //Lottie
     implementation 'com.airbnb.android:lottie:5.2.0'
+
+    /**
+     * TEST
+     */
+    //Mockk
+    testImplementation "io.mockk:mockk:1.13.8"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1"
+    //Mockito
+    testImplementation "org.mockito:mockito-core:4.0.0"
+    testImplementation "org.mockito:mockito-inline:4.0.0"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+
 }
