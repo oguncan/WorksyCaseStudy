@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="praiseItem"
+            type="mobi.worksy.casestudy.data.model.PraiseItemModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/topPraiseLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/praisePersonImage"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    app:randomDrawable="@{null}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:src="@drawable/ic_author_face_1"/>
+
+                <TextView
+                    android:id="@+id/praiseAuthorText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/praisePersonImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="12dp"
+                    android:text="@{praiseItem.authorTitle}"
+                    tools:text="Nagihan Uslu"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/gotham_medium" />
+
+                <TextView
+                    android:id="@+id/praiseDateText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/praiseAuthorText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/praiseAuthorText"
+                    app:formatCreatedDate="@{praiseItem.createdDate}"
+                    tools:text="Dün, 13:30'da Gönderdi"
+                    android:layout_marginTop="2dp"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/gotham_book" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/praiseMiddleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/topPraiseLayout"
+                android:layout_marginTop="12dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/praiseBadgeImage"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    app:loadImageWithBadgeString="@{praiseItem.badgeSingleString}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:src="@drawable/w8"/>
+
+                <TextView
+                    android:id="@+id/praiseBadgeText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/praiseBadgeImage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="12dp"
+                    app:setTextWithBadgeString="@{praiseItem.badgeSingleString}"
+                    tools:text="Takım Oyuncusu"
+                    android:textSize="22sp"
+                    android:fontFamily="@font/gotham_medium" />
+
+                <com.fuzzproductions.ratingbar.RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:stepSize="1"
+                    app:numStars="5"
+                    app:starSize="18dp"
+                    app:starSpacing="1dp"
+                    app:rating="@{Float.valueOf(praiseItem.praiseRating)}"
+                    app:isIndicator="true"
+                    app:emptyDrawable="@drawable/ic_star_inactive"
+                    app:filledDrawable="@drawable/ic_star_active"
+                    app:layout_constraintStart_toStartOf="@id/praiseBadgeText"
+                    app:layout_constraintTop_toBottomOf="@id/praiseBadgeText"
+                    android:layout_marginTop="4dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/praiseMiddleLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/praiseMiddleLayout"
+                android:layout_marginTop="16dp"
+                android:text="@{praiseItem.message}"
+                android:textSize="12sp"
+                android:fontFamily="@font/gotham_book"
+                tools:text="Gerçek bir takım arkadaşısın. Birlikte çalışmanın çok zevkliydi aynı zamanda farklı açılardan bakmama yardımcı oldun, teşekkür ederim."/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">https://gzkql355iwwj7oo4wobephnf7q0kmjvz.lambda-url.eu-central-1.on.aws/</domain>
+    </domain-config>
+</network-security-config>
