@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import mobi.worksy.casestudy.R
@@ -39,7 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setViews(){
-        praiseListAdapter = PraiseListAdapter(emptyList())
+        praiseListAdapter = PraiseListAdapter()
         badgeListAdapter = BadgeSliderAdapter(emptyList())
         binding.apply {
             (activity as AppCompatActivity).setSupportActionBar(toolbar)
@@ -63,58 +64,74 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             praiseShimmerItem.startShimmer()
             badgeTotalShimmer.startShimmer()
 
+            praiseRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+                    viewModel.onRecyclerViewScrolled(visibleItemCount, lastVisibleItemPosition, totalItemCount)
+                }
+            })
         }
     }
 
     private fun setObservers(){
-        viewModel.badgeList.observe(viewLifecycleOwner){ resource ->
-            when(resource){
-                is Resource.Success -> {
-
-                }
-                is Resource.Loading -> {
-
-                }
-                is Resource.Error -> {
-
-                }
-                else -> {
-
-                }
-            }
-
-        }
-
         viewModel.praiseList.observe(viewLifecycleOwner){ resource ->
             when(resource){
-                is Resource.Success -> {
+                is BadgeSliderUiState.Success -> {
                     binding.apply {
                         hideShimmerViews()
                         resource.data?.let {
                             //BADGE
-                            var badgeList = viewModel.calculateBadgeGroups(it.praiseItem)
+                            var badgeList = viewModel.calculateBadgeGroups(it)
                             badgeListAdapter.run {
                                 updateData(badgeList.chunked(4))
                             }
-                            val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.praiseItem)
+                            val (numberOfBadges, averageRating) = viewModel.calculateBadgeTotalAvg(it)
                             badgeAverageText.text = averageRating.formatOneFloatNumber().formatToComma()
                             badgeAverageRatingBar.rating = averageRating.toFloat()
-                            badgeTotalText.text = getString(R.string.quantity_string, totalRating.toInt())
-
-                            //PRAISE
-                            praiseListAdapter.differ.submitList(it.praiseItem)
+                            badgeTotalText.text = getString(R.string.quantity_string, numberOfBadges)
                         }
                     }
                 }
-                is Resource.Loading -> {
+                is BadgeSliderUiState.Loading -> {
                     binding.apply {
                         showShimmerViews()
                     }
                 }
-                is Resource.Error -> {
+                is BadgeSliderUiState.Error -> {
                     binding.apply {
-                        hideShimmerViews()
+                        hideShimmerViews().also {
+                            badgeTopLayout.hide()
+                            viewPagerLayout.hide()
+                            praiseRecyclerView.hide()
+                            errorLayout.root.show()
+                            errorLayout.lottieAnimationView.playAnimation()
+                            errorLayout.errorRetryButton.setOnClickListener {
+                                showShimmerViews()
+                                viewModel.retryRequest()
+                            }
+                        }
                     }
+                }
+            }
+        }
+        viewModel.praisePaginatedList.observe(viewLifecycleOwner){ resource ->
+            when(resource){
+                is PraiseListUiState.Success -> {
+                    binding.apply {
+                        resource.data?.let {
+                            //PRAISE
+                            praiseListAdapter.updateData(it)
+                        }
+                    }
+                }
+                is PraiseListUiState.Loading -> {
+
+                }
+                is PraiseListUiState.Error -> {
+
                 }
             }
 
@@ -150,6 +167,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             badgeTotalShimmer.startShimmer()
             badgeSingleItemShimmer.show()
             badgeSingleItemShimmer.startShimmer()
+
+            errorLayout.root.hide()
+            errorLayout.lottieAnimationView.cancelAnimation()
         }
     }
 

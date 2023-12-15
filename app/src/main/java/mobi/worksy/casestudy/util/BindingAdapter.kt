@@ -28,7 +28,10 @@ fun ImageView.setRandomDrawable(value: Any?) {
     } else {
         R.drawable.ic_author_face_2
     }
-    setImageResource(drawableResId)
+    Glide.with(this)
+        .load(ContextCompat.getDrawable(this.context, drawableResId))
+        .centerCrop()
+        .into(this)
 }
 
 @BindingAdapter("loadImageWithBadgeString")
