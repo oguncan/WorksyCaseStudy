@@ -58,12 +58,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun calculateBadgeTotalAvg(praiseItems: List<PraiseItemModel>): Pair<Double, Double> {
+    fun calculateBadgeTotalAvg(praiseItems: List<PraiseItemModel>): Pair<Int, Double> {
         val totalRating = praiseItems.sumByDouble { it.praiseRating.toDouble() }
+        val numberOfBadges = praiseItems.size
         val averageRating = if (praiseItems.isNotEmpty()) (totalRating / praiseItems.size) else 0.0
-        return Pair(totalRating, averageRating)
+        return Pair(numberOfBadges, averageRating)
     }
 
+    fun retryRequest(){
+        getBadgeList()
+        getPraiseList()
+    }
 
 
     private fun getPraiseList() = viewModelScope.launch {

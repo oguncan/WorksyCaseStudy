@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import mobi.worksy.casestudy.R
@@ -39,7 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setViews(){
-        praiseListAdapter = PraiseListAdapter(emptyList())
+        praiseListAdapter = PraiseListAdapter()
         badgeListAdapter = BadgeSliderAdapter(emptyList())
         binding.apply {
             (activity as AppCompatActivity).setSupportActionBar(toolbar)
@@ -62,7 +63,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }.attach()
             praiseShimmerItem.startShimmer()
             badgeTotalShimmer.startShimmer()
-
         }
     }
 
@@ -78,10 +78,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             badgeListAdapter.run {
                                 updateData(badgeList.chunked(4))
                             }
-                            val (totalRating, averageRating) = viewModel.calculateBadgeTotalAvg(it.praiseItem)
+                            val (numberOfBadges, averageRating) = viewModel.calculateBadgeTotalAvg(it.praiseItem)
                             badgeAverageText.text = averageRating.formatOneFloatNumber().formatToComma()
                             badgeAverageRatingBar.rating = averageRating.toFloat()
-                            badgeTotalText.text = getString(R.string.quantity_string, totalRating.toInt())
+                            badgeTotalText.text = getString(R.string.quantity_string, numberOfBadges)
 
                             //PRAISE
                             praiseListAdapter.differ.submitList(it.praiseItem)
@@ -101,6 +101,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             praiseRecyclerView.hide()
                             errorLayout.root.show()
                             errorLayout.lottieAnimationView.playAnimation()
+                            errorLayout.errorRetryButton.setOnClickListener {
+                                showShimmerViews()
+                                viewModel.retryRequest()
+                            }
                         }
                     }
                 }
