@@ -22,6 +22,7 @@
 - Slider için gerekli hesaplamalar gerçekleştirilerek testler gerçekleştirildi.
 - Shimmer tasarımlar eklenerek Error, Success ve Loading durumları ele alındı.
 - ListView tasarımı küçük kalacağını düşündüğüm için Collapse tasarım tercih edildi.
+- MVVM Mimarisi tercih edildi. 
 
 <p></p>
 <p></p>
@@ -40,6 +41,6 @@
 </p>
 
 ## Architecture
-Resturant is based on MVVM architecture and a repository pattern.
+Worksy is based on MVVM architecture and a repository and UseCase pattern.
 
 ![architecture](https://github.com/oguncan/WorksyCaseStudy/blob/master/77502018-f7d36000-6e9c-11ea-92b0-1097240c8689.png)
