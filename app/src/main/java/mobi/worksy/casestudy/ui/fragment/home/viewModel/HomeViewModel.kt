@@ -89,6 +89,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun retryRequest(){
+        getAllPraiseData()
         getBadgeList()
         getPraiseList()
     }
