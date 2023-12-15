@@ -15,7 +15,13 @@
 - [Glide](https://github.com/bumptech/glide) - loading images.
 - [Lottie](https://github.com/airbnb/lottie-android) - implementing animations
 
-## Performans işlemi için pagination eklendi.
+## Features
+- Performans işlemi için pagination eklendi.
+- ViewModel üzerinden örnek olması açısından Unit test gerçekleştirildi.
+- Tasarım ayrıntılarına dikkat edildi.
+- Slider için gerekli hesaplamalar gerçekleştirilerek testler gerçekleştirildi.
+- Shimmer tasarımlar eklenerek Error, Success ve Loading durumları ele alındı.
+- ListView tasarımı küçük kalacağını düşündüğüm için Collapse tasarım tercih edildi.
 
 <p></p>
 <p></p>
